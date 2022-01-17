@@ -147,6 +147,17 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
+	//Camera position
+	float speed_cam = 0.09;
+	vec3 p = vehicle->GetPos();
+	vec3 f = vehicle->GetForwardVector();
+
+	vec3 dist_to_car = { -16.0f, 8.0f, -16.0f };
+	vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
+	vec3 speed_camera = camera_new_position - App->camera->Position;
+
+	App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+
 	return UPDATE_CONTINUE;
 }
 
