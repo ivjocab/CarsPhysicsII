@@ -137,6 +137,9 @@ update_status ModulePlayer::Update(float dt)
 		brake = BRAKE_POWER;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		RestartPlayer(5, 5, 5);
+
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
@@ -163,3 +166,11 @@ update_status ModulePlayer::Update(float dt)
 
 
 
+void ModulePlayer::RestartPlayer(int x, int y, int z)
+{
+	//brake = BRAKE_POWER;
+	vehicle->SetLinearVelocity(0,0,0);
+	vehicle->SetAngularVelocity(0,0,0);
+	vehicle->SetPos(x, y, z);
+
+}
