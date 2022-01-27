@@ -117,6 +117,7 @@ update_status ModulePlayer::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
+		if (acceleration < 0) brake = BRAKE_POWER;
 		acceleration = MAX_ACCELERATION;
 	}
 
@@ -134,7 +135,8 @@ update_status ModulePlayer::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		brake = BRAKE_POWER;
+		if (acceleration > 0) brake = BRAKE_POWER;
+		else acceleration = - MAX_ACCELERATION;
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
@@ -152,7 +154,7 @@ update_status ModulePlayer::Update(float dt)
 	vec3 p = vehicle->GetPos();
 	vec3 f = vehicle->GetForwardVector();
 
-	vec3 dist_to_car = { -16.0f, 8.0f, -16.0f };
+	vec3 dist_to_car = { -16.0f, 12.0f, -25.0f };
 	vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
 	vec3 speed_camera = camera_new_position - App->camera->Position;
 
