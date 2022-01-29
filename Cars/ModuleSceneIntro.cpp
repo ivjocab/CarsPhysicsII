@@ -23,16 +23,37 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	createPlatform({ 0, 1.0f, 10.0f }, { 14.0f, 2.0f, 30.0f });
-	createPlatform({ 0, 1.0f, 40.0f }, { 14.0f, 2.0f, 30.0f });
-	createPlatform({ 0, 1.0f, 70.0f }, { 14.0f, 2.0f, 30.0f });
-	createPlatform({ 0, 1.0f, 100.0f }, { 14.0f, 2.0f, 30.0f });
-	createPlatform({ -8, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f });
-	createPlatform({ -38, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f });
-	createCircularPlatform({ -65, 1.0f, 122.0f }, 15.0f, 1.99f);
-	createPlatform({ -92, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f });
+	//Scene
+	createPlatform({ -150, -80, 0 }, { 20000.0f, 0.1, 20000.0f }, 0, 0);
+	createPlatform({ -150, 80, 0 }, { 20000.0f, 0.1, 20000.0f }, 0, 0);
+	createPlatform({ -80.0f, -100.0f, 60.0f }, { 70.0f, 500.0f, 70.0f }, 0, 0);
+	createCircularPlatform({ -179.0f, -100.0f, 142.0f }, 20, 400);
 
-
+	//Circuit
+	createPlatform({ 0, 1.0f, 10.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ 0, 1.0f, 40.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ 0, 1.0f, 70.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ 0, 1.0f, 100.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -8, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -38, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -68, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -98, 1.0f, 122.0f }, { 30.0f, 2.0f, 24.0f }, 180, {0, 180, 45});
+	createPlatform({ -128, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -136, 1.0f, 144.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -136, 1.0f, 174.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -144, 1.0f, 196.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -174, 1.0f, 196.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -204, 1.0f, 196.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -226, 1.0f, 188.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -226, 1.0f, 158.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -226, 1.0f, 128.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createRampPlatformZ({ -226, -6.0f, 100.0f }, { 14.0f, 2.0f, 30.0f });
+	createRampPlatformZ({ -226, -20.0f, 74.0f }, { 14.0f, 2.0f, 30.0f });
+	createPlatform({ -226, -27.0f, 46.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -248, -27.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createRampPlatformX({ -276, -20.0f, 38.0f }, { 30.0f, 2.0f, 14.0f });
+	createPlatform({ -330, -14.0f, 38.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -360, -14.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 
 	//createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 3.0f, -70.0f });
 	//createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 3.0f, -62.5f });
@@ -150,13 +171,15 @@ void ModuleSceneIntro::createRamp(const vec3 i_pos, const vec3 f_pos)
 	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 }
 
-void ModuleSceneIntro::createPlatform(const vec3 pos, const vec3 size)
+void ModuleSceneIntro::createPlatform(const vec3 pos, const vec3 size, float angle, vec3 dir)
 {
 	Cube c;
 	c.SetPos(pos.x, pos.y, pos.z);
 	c.size = size;
+	if (size.x > 1000) c.color = Orange;
+	if (angle != 0) c.SetRotation(angle, dir);
 	platform_list.PushBack(c);
-	App->physics->AddBody(c, this, 0.0f);
+	App->physics->AddBody(c, this, 0.0f, false);
 }
 
 void ModuleSceneIntro::createCircularPlatform(const vec3 pos, const float radius, const float height)
@@ -170,7 +193,27 @@ void ModuleSceneIntro::createCircularPlatform(const vec3 pos, const float radius
 	c.SetRotation(180, {180, 180, 0});
 
 	circular_platform_list.PushBack(c);
-	App->physics->AddBody(c, this, 0.0f);
+	App->physics->AddBody(c, this, 0.0f, false);
+}
+
+void ModuleSceneIntro::createRampPlatformZ(const vec3 pos, const vec3 size)
+{
+	Cube c;
+	c.SetPos(pos.x, pos.y, pos.z);
+	c.size = size;
+	c.SetRotation(180, {0, 45, 180});
+	platform_list.PushBack(c);
+	App->physics->AddBody(c, this, 0.0f, false);
+}
+
+void ModuleSceneIntro::createRampPlatformX(const vec3 pos, const vec3 size)
+{
+	Cube c;
+	c.SetPos(pos.x, pos.y, pos.z);
+	c.size = size;
+	c.SetRotation(180, { -180, 45, 0 });
+	platform_list.PushBack(c);
+	App->physics->AddBody(c, this, 0.0f, false);
 }
 
 void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, uint intervals)

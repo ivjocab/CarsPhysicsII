@@ -35,8 +35,10 @@ public:
 	void createLinearSegmentCircuit(const vec3 initial_pos, const vec3 final_pos, uint intervals);
 	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint left_intervals, uint right_intervals = 6);
 	void createRamp(const vec3 i, const vec3 f);
-	void createPlatform(const vec3 pos, const vec3 size);
+	void createPlatform(const vec3 pos, const vec3 size, float angle, vec3 dir);
 	void createCircularPlatform(const vec3 pos, const float radius, const float height);
+	void createRampPlatformZ(const vec3 pos, const vec3 size);
+	void createRampPlatformX(const vec3 pos, const vec3 size);
 	void createCheckPoint(const vec3 pos, float direction);
 
 public:
@@ -63,4 +65,6 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+
+	Plane* p;
 };

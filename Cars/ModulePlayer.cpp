@@ -99,10 +99,10 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
 
-	Cube* c = new Cube(2.4f, 2.2f, 4);
-	vehicleCollider = App->physics->AddBody(*c, this, 1.0f, true);
-	vehicleCollider->SetLinearVelocity(0, -250, 0);
-	vehicleCollider->collision_listeners.add(this);
+	//Cube* c = new Cube(2.4f, 2.2f, 4);
+	//vehicleCollider = App->physics->AddBody(*c, this, 1.0f, true);
+	//vehicleCollider->SetLinearVelocity(0, -250, 0);
+	//vehicleCollider->collision_listeners.add(this);
 	
 	return true;
 }
@@ -120,28 +120,35 @@ update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		if (acceleration < 0) brake = BRAKE_POWER;
-		acceleration = MAX_ACCELERATION;
+		debug = !debug;
 	}
-
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (!debug)
 	{
-		if(turn < TURN_DEGREES)
-			turn +=  TURN_DEGREES;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			if (acceleration < 0) brake = BRAKE_POWER;
+			acceleration = MAX_ACCELERATION;
+		}
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		if(turn > -TURN_DEGREES)
-			turn -= TURN_DEGREES;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			if (turn < TURN_DEGREES)
+				turn += TURN_DEGREES;
+		}
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		if (acceleration > 0) brake = BRAKE_POWER;
-		else acceleration = - MAX_ACCELERATION;
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			if (turn > -TURN_DEGREES)
+				turn -= TURN_DEGREES;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			if (acceleration > 0) brake = BRAKE_POWER;
+			else acceleration = -MAX_ACCELERATION;
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -157,8 +164,8 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
-	vehicleCollider->SetPos(vehicle->GetPos().x, vehicle->GetPos().y + 0.8, vehicle->GetPos().z);
-	vehicleCollider->SetRotation(vehicle->GetRotation());
+	//vehicleCollider->SetPos(vehicle->GetPos().x, vehicle->GetPos().y + 0.8, vehicle->GetPos().z);
+	//vehicleCollider->SetRotation(vehicle->GetRotation());
 
 	//Camera position
 	float speed_cam = 0.09;
@@ -169,7 +176,10 @@ update_status ModulePlayer::Update(float dt)
 	vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
 	vec3 speed_camera = camera_new_position - App->camera->Position;
 
-	App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+	if (!debug)
+	{
+		App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+	}
 
 	return UPDATE_CONTINUE;
 }
