@@ -25,9 +25,9 @@ bool ModuleSceneIntro::Start()
 
 	//Scene
 	createPlatform({ -150, -80, 0 }, { 20000.0f, 0.1, 20000.0f }, 0, 0);
-	createPlatform({ -150, 80, 0 }, { 20000.0f, 0.1, 20000.0f }, 0, 0);
+	createPlatform({ -150, 120, 0 }, { 20000.0f, 0.1, 20000.0f }, 0, 0);
 	createPlatform({ -80.0f, -100.0f, 60.0f }, { 70.0f, 500.0f, 70.0f }, 0, 0);
-	createCircularPlatform({ -179.0f, -100.0f, 142.0f }, 20, 400);
+	createCircularPlatform({ -179.0f, -100.0f, 142.0f }, 20, 280);
 
 	//Circuit
 	createPlatform({ 0, 1.0f, 10.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
@@ -54,9 +54,48 @@ bool ModuleSceneIntro::Start()
 	createRampPlatformX({ -276, -20.0f, 38.0f }, { 30.0f, 2.0f, 14.0f });
 	createPlatform({ -330, -14.0f, 38.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ -360, -14.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
-
-	//createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 3.0f, -70.0f });
-	//createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 3.0f, -62.5f });
+	createPlatform({ -390, -14.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -420, -14.0f, 38.0f }, { 30.0f, 2.0f, 24.0f }, 180, { 0, 180, 45 });
+	createPlatform({ -450, -14.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -472, -14.0f, 30.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -472, -14.0f, 0.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -472, -14.0f, -30.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -464, -14.0f, -52.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -434, -14.0f, -52.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -404, -14.0f, -52.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -374, -14.0f, -52.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -366, -14.0f, -74.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -366, -7, -102.0f }, { 14.0f, 2.0f, 30.0f }, 180, { 0, 180, 45 });
+	createPlatform({ -366, 0.0f, -130.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -366, 0.0f, -160.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -366, 0.0f, -190.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -388, 0.0f, -198.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -438, -14.0f, -198.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -468, -14.0f, -198.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -498, -14.0f, -198.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -506, -14.0f, -176.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -506, -14.0f, -146.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -484, -14.0f, -138.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -454, -14.0f, -138.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -424, -14.0f, -138.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -394, -14.0f, -138.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -364, -14.0f, -138.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -334, -14.0f, -138.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -304, -14.0f, -138.0f }, { 30.0f, 2.0f, 24.0f }, 180, { 0, 180, 45 });
+	createPlatform({ -274, -14.0f, -138.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -266, -14.0f, -116.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -258, -14.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -228, -14.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -198, -14.0f, -94.0f }, { 30.0f, 2.0f, 24.0f }, 180, { 0, 180, 45 });
+	createPlatform({ -168, -14.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -138, -14.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -110, -7.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 180, { 180, 45, 0 });
+	createPlatform({ -82, 0.0f, -94.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -52, 0.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ -22, 0.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
+	createPlatform({ 0, 0.0f, -86.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -0, 0.0f, -56.0f }, { 24.0f, 2.0f, 30.0f }, 180, { 45, 180, 0 });
+	createPlatform({ 0, 1.0f, -23.0f }, { 14.0f, 2.0f, 36.0f }, 0, 0);
 
 	return ret;
 }
