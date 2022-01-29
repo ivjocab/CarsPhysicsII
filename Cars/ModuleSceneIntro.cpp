@@ -52,7 +52,7 @@ bool ModuleSceneIntro::Start()
 	createPlatform({ -226, -27.0f, 46.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ -248, -27.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createRampPlatformX({ -276, -20.0f, 38.0f }, { 30.0f, 2.0f, 14.0f });
-	createPlatform({ -330, -14.0f, 38.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -330, -14.0f, 38.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0); //checkpoint
 	createPlatform({ -360, -14.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ -390, -14.0f, 38.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ -420, -14.0f, 38.0f }, { 30.0f, 2.0f, 24.0f }, 180, { 0, 180, 45 });
@@ -66,7 +66,7 @@ bool ModuleSceneIntro::Start()
 	createPlatform({ -374, -14.0f, -52.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ -366, -14.0f, -74.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ -366, -7, -102.0f }, { 14.0f, 2.0f, 30.0f }, 180, { 0, 180, 45 });
-	createPlatform({ -366, 0.0f, -130.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -366, 0.0f, -130.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0); //checkpoint
 	createPlatform({ -366, 0.0f, -160.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ -366, 0.0f, -190.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ -388, 0.0f, -198.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
@@ -90,12 +90,20 @@ bool ModuleSceneIntro::Start()
 	createPlatform({ -168, -14.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ -138, -14.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ -110, -7.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 180, { 180, 45, 0 });
-	createPlatform({ -82, 0.0f, -94.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ -82, 0.0f, -94.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0); //checkpoint
 	createPlatform({ -52, 0.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ -22, 0.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ 0, 0.0f, -86.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ -0, 0.0f, -56.0f }, { 24.0f, 2.0f, 30.0f }, 180, { 45, 180, 0 });
 	createPlatform({ 0, 1.0f, -23.0f }, { 14.0f, 2.0f, 36.0f }, 0, 0);
+
+	//Checkpoints
+	createCheckPoint({ -330, -12.99f, 38.0f }, { 30.0f, 0.01f, 30.0f });
+	createCheckPoint({ -366, 1.01f, -130.0f }, { 30.0f, 0.01f, 30.0f });
+	createCheckPoint({ -82, 1.01f, -94.0f }, { 30.0f, 0.01f, 30.0f });
+
+	posBeforeDeath = App->player->vehiclePos;
+	posBeforeDeath.y += 5;
 
 	return ret;
 }
@@ -156,6 +164,15 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (int i = 0; i < circular_platform_list.Count(); i++)
 		circular_platform_list[i].Render();
+
+	for (int i = 0; i < checkpoints.Count(); i++)
+		checkpoints[i].Render();
+
+	isPlayerOnCheckpoint();
+	if (checkpointsObtained > 0)
+	{
+		posBeforeDeath = checkpoints[checkpointsObtained - 1].pos;
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -255,147 +272,41 @@ void ModuleSceneIntro::createRampPlatformX(const vec3 pos, const vec3 size)
 	App->physics->AddBody(c, this, 0.0f, false);
 }
 
-void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, uint intervals)
+void ModuleSceneIntro::createCheckPoint(const vec3 pos, const vec3 size)
 {
+	p = new Cube(size.x, size.y, size.z);
+	p->SetPos(pos.x, pos.y, pos.z);
+	p->n = checkpoints.Count();
+	p->color = Yellow;
+	checkpoints.PushBack(*p);
+	p->pos = pos;
+}
 
-	float distance = sqrt(pow(f.x - i.x, 2) + pow(f.y - i.y, 2) + pow(f.z - i.z, 2));
-	float dist_segment = distance / intervals;
-
-	vec3 dir_v = f - i;
-	float dir_v_mod = sqrt((dir_v.x * dir_v.x) + (dir_v.y * dir_v.y) + (dir_v.z * dir_v.z));
-	dir_v /= dir_v_mod;
-	vec3 perp_v = { -dir_v.z, 0, dir_v.x };
-	float perp_v_mod = sqrt((perp_v.x * perp_v.x) + (perp_v.y * perp_v.y) + (perp_v.z * perp_v.z));
-	perp_v /= perp_v_mod;
-
-	vec3 pos;
-	vec3 dim(1, 2, 1);
-
-	Cube c;
-	c.color = White;
-	c.size = { dim.x, dim.y, dim.z };
-
-	for (uint j = 0; j < intervals; j++)
+void ModuleSceneIntro::isPlayerOnCheckpoint()
+{
+	for (int i = 0; i < checkpoints.Count(); i++)
 	{
-		c.color = (j % 2 == 0) ? White : Red;
-
-		pos = (i + (dir_v * j * dist_segment)) + ((TRACK_WIDTH / 2) * perp_v);
-		c.SetPos(pos.x, pos.y + 1, pos.z);
-		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
-		pos = (i + (dir_v * j * dist_segment)) + ((TRACK_WIDTH / 2) * -perp_v);
-		c.SetPos(pos.x, pos.y + 1, pos.z);
-		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
+		if (App->player->vehiclePos.x < checkpoints[i].pos.x && App->player->vehiclePos.x > checkpoints[i].pos.x + 30 &&
+			App->player->vehiclePos.z < checkpoints[i].pos.z && App->player->vehiclePos.z > checkpoints[i].pos.z + 30 &&
+			App->player->vehiclePos.y < checkpoints[i].pos.y - 1 && App->player->vehiclePos.y > checkpoints[i].pos.y + 1)
+		{
+			if (checkpoints[i].n == 0 && checkpointsObtained == 0)
+			{
+				checkpointsObtained = 1;
+			}
+			if (checkpoints[i].n == 1 && checkpointsObtained == 1)
+			{
+				checkpointsObtained = 2;
+			}
+			if (checkpoints[i].n == 2 && checkpointsObtained == 0)
+			{
+				checkpointsObtained = 3;
+			}
+			/*createCheckPoint({ -330, -12.99f, 38.0f }, { 30.0f, 0.01f, 30.0f });
+			createCheckPoint({ -366, 1.01f, -130.0f }, { 30.0f, 0.01f, 30.0f });
+			createCheckPoint({ -82, 1.01f, -94.0f }, { 30.0f, 0.01f, 30.0f });*/
+		}
 	}
 }
 
-void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint exterior_intervals, uint interior_intervals)
-{
-	assert(factor < 1.0f && factor > -1.0f);
-	float distance = length(f - i);
-	vec3 mid_point = (f - i) / 2.0f + i;
-
-	vec3 dir_v = f - i;
-	dir_v = normalize(dir_v);
-	vec3 perp_v = { -dir_v.z, 0, dir_v.x };
-	perp_v = normalize(perp_v);
-
-	float max_radi = distance / 2.0f;
-	float seg_to_high_point = factor * max_radi;
-
-	vec3 h = mid_point + (seg_to_high_point * perp_v);
-
-	float mFH = (h.z - f.z) / (h.x - f.x);
-	float mIH = (i.z - h.z) / (i.x - h.x);
-
-	vec3 center_circle = { 0, 0, 0 };
-	center_circle.x = (mFH * mIH * (i.z - f.z) + mFH * (h.x + i.x) - mIH * (f.x + h.x)) / (2.0f * (mFH - mIH));
-	center_circle.z = (-1 / mFH) * (center_circle.x - ((f.x + h.x) / 2.0f)) + ((f.z + h.z) / 2.0f);
-
-	vec3 c_to_i = normalize(i - center_circle);
-	vec3 c_to_f = normalize(f - center_circle);
-	float theta = acos(dot(c_to_f, c_to_i));
-	float radius = length(f - center_circle);
-
-	float angle_ref = 0.0f;
-	if (i.z >= center_circle.z && i.x < center_circle.x)
-		angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));
-	else if (i.z >= center_circle.z && i.x >= center_circle.x)
-		angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));
-	else if (i.z < center_circle.z && i.x >= center_circle.x)
-		angle_ref = 2 * M_PI - acos(dot(c_to_i, { 1, 0, 0 }));
-	else if (i.z < center_circle.z && i.x < center_circle.x)
-		angle_ref = 2 * M_PI - acos(dot(c_to_i, { 1, 0, 0 }));
-
-	Cube c;
-	vec3 dim(1, 2, 1);
-	vec3 pos;
-	c.size = { dim.x, dim.y, dim.z };
-	c.color = Orange;
-
-	vec3 central_pos;
-
-	for (uint j = 0; j < exterior_intervals; j++)
-	{
-		c.color = (j % 2 == 0) ? White : Red;
-		float sub_angle = (factor > 0.0f) ? -(float)j / exterior_intervals * theta : (float)j / exterior_intervals * theta;
-
-		central_pos.x = center_circle.x + radius * cos(sub_angle + angle_ref);
-		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);
-
-		vec3 to_center = normalize(central_pos - center_circle);
-		pos = central_pos + ((TRACK_WIDTH / 2.0f) * to_center);
-		c.SetPos(pos.x, pos.y + 1, pos.z);
-		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-	}
-
-	for (uint j = 0; j < interior_intervals; j++)
-	{
-		c.color = (j % 2 == 0) ? White : Red;
-		float sub_angle = (factor > 0.0f) ? -(float)j / interior_intervals * theta : (float)j / interior_intervals * theta;
-
-		central_pos.x = center_circle.x + radius * cos(sub_angle + angle_ref);
-		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);
-
-		vec3 to_center = normalize(central_pos - center_circle);
-		pos = central_pos + ((TRACK_WIDTH / 2.0f) * -to_center);
-		c.SetPos(pos.x, pos.y + 1, pos.z);
-		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-	}
-}
-
-void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
-{
-	float radius = TRACK_WIDTH / 2;
-	vec3 pos1(0, pos.y + 2.9, radius);
-	vec3 pos2(0, pos.y + 2.9, -radius);
-	float theta = direction * M_PI / 180;
-	pos1.x += radius * sin(theta); pos1.z = pos1.z * cos(theta);
-	pos2.x -= radius * sin(theta); pos2.z = pos2.z * cos(theta);
-
-	Cube sensor;
-	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
-	sensor.size = { dim.x, dim.y, dim.z };
-	sensor.SetPos(pos.x, pos.y + 1, pos.z);
-	sensor.SetRotation(direction, { 0, 1, 0 });
-
-	Cube check_point;
-	check_point.size = { 2.0f, 2.0f, 2.0f };
-	check_point.SetPos(pos1.x + pos.x, pos1.y, pos1.z + pos.z);
-	check_point.color = White;
-	Cube check_point2;
-	check_point2.size = { 2.0f, 2.0f, 2.0f };
-	check_point2.SetPos(pos2.x + pos.x, pos2.y, pos2.z + pos.z);
-	check_point2.color = White;
-
-	PhysBody3D* pb_sensor = App->physics->AddBody(sensor, this, 0.0f, true);
-	pb_sensor->rotation = theta;
-	check_points.PushBack(pb_sensor);
-	prim_check_points.PushBack(check_point);
-	prim_check_points.PushBack(check_point2);
-}
 

@@ -31,6 +31,8 @@ public:
 	Color color;
 	mat4x4 transform;
 	bool axis,wire;
+	int n;
+	vec3 pos;
 
 protected:
 	PrimitiveTypes type;

@@ -98,6 +98,7 @@ bool ModulePlayer::Start()
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
+	vehicleRot = vehicle->GetRotation();
 
 	//Cube* c = new Cube(2.4f, 2.2f, 4);
 	//vehicleCollider = App->physics->AddBody(*c, this, 1.0f, true);
@@ -179,6 +180,15 @@ update_status ModulePlayer::Update(float dt)
 	if (!debug)
 	{
 		App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+	}
+
+	vehiclePos = vehicle->GetPos();
+	
+	if (vehicle->GetPos().y < -30.0f)
+	{
+		vehicle->SetPos(App->scene_intro->posBeforeDeath.x, App->scene_intro->posBeforeDeath.y, App->scene_intro->posBeforeDeath.z);
+		vehicle->SetLinearVelocity(0, 0, 0);
+		vehicle->SetRotation(vehicleRot);
 	}
 
 	return UPDATE_CONTINUE;

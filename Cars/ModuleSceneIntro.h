@@ -26,30 +26,28 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 	p2DynArray<PhysBody3D*> check_points;
+	p2DynArray<Cube> checkpoints;
 	p2DynArray<Cube> prim_check_points;
 	p2DynArray<Cube> platform_list;
 	p2DynArray<Cylinder> circular_platform_list;
 	uint current_checkpoint;
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
-	void createLinearSegmentCircuit(const vec3 initial_pos, const vec3 final_pos, uint intervals);
-	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint left_intervals, uint right_intervals = 6);
 	void createRamp(const vec3 i, const vec3 f);
 	void createPlatform(const vec3 pos, const vec3 size, float angle, vec3 dir);
 	void createCircularPlatform(const vec3 pos, const float radius, const float height);
 	void createRampPlatformZ(const vec3 pos, const vec3 size);
 	void createRampPlatformX(const vec3 pos, const vec3 size);
-	void createCheckPoint(const vec3 pos, float direction);
+	void createCheckPoint(const vec3 pos, const vec3 size);
+	void isPlayerOnCheckpoint();
 
 public:
-	/*
-	PhysBody3D* pb_snake[MAX_SNAKE];
-	Sphere s_snake[MAX_SNAKE];
 
-	PhysBody3D* pb_snake2[MAX_SNAKE];
-	Sphere s_snake2[MAX_SNAKE];
-	*/
+	//Checkpoints & player death
+	vec3 posBeforeDeath;
+	int checkpointsObtained = 0;
 
+	//...
 	p2List<Plane> plane_list;
 
 	cubePieces cube_circuit_pieces;
@@ -66,5 +64,5 @@ public:
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
 
-	Plane* p;
+	Cube* p;
 };
