@@ -169,9 +169,13 @@ update_status ModuleSceneIntro::Update(float dt)
 		checkpoints[i].Render();
 
 	isPlayerOnCheckpoint();
-	if (checkpointsObtained > 0)
+	if (checkpointsObtained > 0 && checkpointsObtained < 4)
 	{
 		posBeforeDeath = checkpoints[checkpointsObtained - 1].pos;
+	}
+	if (checkpointsObtained < 4)
+	{
+
 	}
 
 	return UPDATE_CONTINUE;
@@ -278,29 +282,29 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, const vec3 size)
 	p->SetPos(pos.x, pos.y, pos.z);
 	p->n = checkpoints.Count();
 	p->color = Yellow;
-	checkpoints.PushBack(*p);
 	p->pos = pos;
+	checkpoints.PushBack(*p);
 }
 
 void ModuleSceneIntro::isPlayerOnCheckpoint()
 {
 	for (int i = 0; i < checkpoints.Count(); i++)
 	{
-		if (App->player->vehiclePos.x < checkpoints[i].pos.x && App->player->vehiclePos.x > checkpoints[i].pos.x + 30 &&
-			App->player->vehiclePos.z < checkpoints[i].pos.z && App->player->vehiclePos.z > checkpoints[i].pos.z + 30 &&
-			App->player->vehiclePos.y < checkpoints[i].pos.y - 1 && App->player->vehiclePos.y > checkpoints[i].pos.y + 1)
+		if (App->player->vehiclePos.x < checkpoints[i].pos.x + 15 && App->player->vehiclePos.x > checkpoints[i].pos.x - 15 &&
+			App->player->vehiclePos.z < checkpoints[i].pos.z + 15 && App->player->vehiclePos.z > checkpoints[i].pos.z - 15 &&
+			App->player->vehiclePos.y > checkpoints[i].pos.y - 1 && App->player->vehiclePos.y < checkpoints[i].pos.y + 30)
 		{
 			if (checkpoints[i].n == 0 && checkpointsObtained == 0)
 			{
-				checkpointsObtained = 1;
+				checkpointsObtained++;
 			}
 			if (checkpoints[i].n == 1 && checkpointsObtained == 1)
 			{
-				checkpointsObtained = 2;
+				checkpointsObtained++;
 			}
-			if (checkpoints[i].n == 2 && checkpointsObtained == 0)
+			if (checkpoints[i].n == 2 && checkpointsObtained == 2)
 			{
-				checkpointsObtained = 3;
+				checkpointsObtained++;
 			}
 			/*createCheckPoint({ -330, -12.99f, 38.0f }, { 30.0f, 0.01f, 30.0f });
 			createCheckPoint({ -366, 1.01f, -130.0f }, { 30.0f, 0.01f, 30.0f });
