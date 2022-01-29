@@ -1,6 +1,7 @@
 #include "PhysBody3D.h"
 #include "glmath.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
+#include "Bullet/include/LinearMath/btQuaternion.h"
 
 // =================================================
 PhysBody3D::PhysBody3D(btRigidBody* body) : body(body)
@@ -51,6 +52,18 @@ void PhysBody3D::SetPos(float x, float y, float z)
 {
 	btTransform t = body->getWorldTransform();
 	t.setOrigin(btVector3(x, y, z));
+	body->setWorldTransform(t);
+}
+
+btQuaternion PhysBody3D::GetRotation() const
+{
+	return body->getWorldTransform().getRotation();
+}
+
+void PhysBody3D::SetRotation(btQuaternion& quat)
+{
+	btTransform t = body->getWorldTransform();
+	t.setRotation(quat);
 	body->setWorldTransform(t);
 }
 

@@ -2,6 +2,7 @@
 #define __PhysBody3D_H__
 
 #include "p2List.h"
+#include "Bullet/include/LinearMath/btQuaternion.h"
 
 class btRigidBody;
 class Module;
@@ -19,6 +20,8 @@ public:
 	void GetTransform(float* matrix) const;
 	void SetTransform(const float* matrix) const;
 	void SetPos(float x, float y, float z);
+	btQuaternion GetRotation() const;
+	void SetRotation(btQuaternion& quat);
 	void SetLinearVelocity(float x, float y, float z);
 	void SetAngularVelocity(float x, float y, float z);
 	vec3 GetLinearVelocity() const;

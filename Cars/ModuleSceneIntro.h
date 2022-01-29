@@ -28,6 +28,7 @@ public:
 	p2DynArray<PhysBody3D*> check_points;
 	p2DynArray<Cube> prim_check_points;
 	p2DynArray<Cube> platform_list;
+	p2DynArray<Cylinder> circular_platform_list;
 	uint current_checkpoint;
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
@@ -35,6 +36,7 @@ public:
 	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint left_intervals, uint right_intervals = 6);
 	void createRamp(const vec3 i, const vec3 f);
 	void createPlatform(const vec3 pos, const vec3 size);
+	void createCircularPlatform(const vec3 pos, const float radius, const float height);
 	void createCheckPoint(const vec3 pos, float direction);
 
 public:

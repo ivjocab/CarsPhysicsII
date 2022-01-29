@@ -21,7 +21,7 @@ bool ModulePlayer::Start()
 	VehicleInfo car;
 
 	// Car properties ----------------------------------------
-	car.chassis_size.Set(2, 2, 4);
+	car.chassis_size.Set(2.4f, 1, 4);
 	car.chassis_offset.Set(0, 1.5, 0);
 	car.mass = 500.0f;
 	car.suspensionStiffness = 15.88f;
@@ -98,6 +98,11 @@ bool ModulePlayer::Start()
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
+
+	Cube* c = new Cube(2.4f, 2.2f, 4);
+	vehicleCollider = App->physics->AddBody(*c, this, 1.0f, true);
+	vehicleCollider->SetLinearVelocity(0, -250, 0);
+	vehicleCollider->collision_listeners.add(this);
 	
 	return true;
 }
@@ -152,6 +157,9 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
+	vehicleCollider->SetPos(vehicle->GetPos().x, vehicle->GetPos().y + 0.8, vehicle->GetPos().z);
+	vehicleCollider->SetRotation(vehicle->GetRotation());
+
 	//Camera position
 	float speed_cam = 0.09;
 	vec3 p = vehicle->GetPos();
@@ -174,5 +182,4 @@ void ModulePlayer::RestartPlayer(int x, int y, int z)
 	vehicle->SetLinearVelocity(0,0,0);
 	vehicle->SetAngularVelocity(0,0,0);
 	vehicle->SetPos(x, y, z);
-
 }

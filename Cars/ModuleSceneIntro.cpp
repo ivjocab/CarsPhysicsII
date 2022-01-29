@@ -24,8 +24,18 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	createPlatform({ 0, 1.0f, 10.0f }, { 14.0f, 2.0f, 30.0f });
-	createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 3.0f, -70.0f });
-	createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 3.0f, -62.5f });
+	createPlatform({ 0, 1.0f, 40.0f }, { 14.0f, 2.0f, 30.0f });
+	createPlatform({ 0, 1.0f, 70.0f }, { 14.0f, 2.0f, 30.0f });
+	createPlatform({ 0, 1.0f, 100.0f }, { 14.0f, 2.0f, 30.0f });
+	createPlatform({ -8, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f });
+	createPlatform({ -38, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f });
+	createCircularPlatform({ -65, 1.0f, 122.0f }, 15.0f, 1.99f);
+	createPlatform({ -92, 1.0f, 122.0f }, { 30.0f, 2.0f, 14.0f });
+
+
+
+	//createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 3.0f, -70.0f });
+	//createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 3.0f, -62.5f });
 
 	return ret;
 }
@@ -75,7 +85,6 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-
 	for (int i = 0; i < cube_circuit_pieces.prim_bodies.Count(); i++)
 		cube_circuit_pieces.prim_bodies[i].Render();
 
@@ -85,11 +94,15 @@ update_status ModuleSceneIntro::Update(float dt)
 	for (int i = 0; i < platform_list.Count(); i++)
 		platform_list[i].Render();
 
+	for (int i = 0; i < circular_platform_list.Count(); i++)
+		circular_platform_list[i].Render();
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+
 }
 
 void ModuleSceneIntro::createRamp(const vec3 i_pos, const vec3 f_pos)
@@ -143,6 +156,20 @@ void ModuleSceneIntro::createPlatform(const vec3 pos, const vec3 size)
 	c.SetPos(pos.x, pos.y, pos.z);
 	c.size = size;
 	platform_list.PushBack(c);
+	App->physics->AddBody(c, this, 0.0f);
+}
+
+void ModuleSceneIntro::createCircularPlatform(const vec3 pos, const float radius, const float height)
+{
+	Cylinder c;
+	c.SetPos(pos.x, pos.y, pos.z);
+	c.radius = radius;
+	c.height = height;
+	c.wire = false;
+
+	c.SetRotation(180, {180, 180, 0});
+
+	circular_platform_list.PushBack(c);
 	App->physics->AddBody(c, this, 0.0f);
 }
 
@@ -256,9 +283,7 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
 		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
 	}
-
 }
 
 void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)

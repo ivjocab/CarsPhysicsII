@@ -127,14 +127,14 @@ update_status ModulePhysics3D::Update(float dt)
 			item = item->next;
 		}
 
-		if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		{
-			Sphere s(1);
-			s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-			float force = 30.0f;
-			AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
-			s.Render();
-		}
+		//if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		//{
+		//	Sphere s(1);
+		//	s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+		//	float force = 30.0f;
+		//	AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
+		//	s.Render();
+		//}
 	}
 	
 
@@ -249,7 +249,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, Module* listener, float m
 }
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass, bool sensor)
+PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, Module* listener, float mass, bool sensor)
 {
 	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder.height*0.5f, cylinder.radius, 0.0f));
 	shapes.add(colShape);
