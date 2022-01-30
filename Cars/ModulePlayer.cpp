@@ -188,7 +188,7 @@ update_status ModulePlayer::Update(float dt)
 	// Turbo
 	vehicle->Turn(turn);
 	if (turbo == true) {
-		if (turboCooldown > 370) vehicle->ApplyEngineForce(MAX_ACCELERATION * 50.0f);
+		if (turboCooldown > 300) vehicle->ApplyEngineForce(MAX_ACCELERATION * 5.0f);
 		--turboCooldown;
 	}
 	// Drag
