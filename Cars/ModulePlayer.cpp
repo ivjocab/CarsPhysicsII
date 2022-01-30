@@ -111,8 +111,8 @@ bool ModulePlayer::Start()
 
 	App->audio->LoadFx("Assets/idle.wav");
 	App->audio->LoadFx("Assets/turbo.wav");
+	App->audio->LoadFx("Assets/brake.wav");
 
-	App->audio->PlayFx(3, 0);
 	engineSound = false;
 
 	lives = 2;
@@ -165,6 +165,11 @@ update_status ModulePlayer::Update(float dt)
 		{
 			if (turn > -TURN_DEGREES)
 				turn -= TURN_DEGREES;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && vehicle->GetKmh() >= 40)
+		{
+			App->audio->PlayFx(3, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
