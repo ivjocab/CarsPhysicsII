@@ -7,6 +7,7 @@
 #include "ModulePhysics3D.h"
 #include "Color.h"
 #include "glut/glut.h"
+#include "ModuleAudio.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -113,6 +114,7 @@ bool ModuleSceneIntro::Start()
 	createCheckPoint({ 0, 2.01f, 10.0f }, { 30.0f, 0.01f, 30.0f });
 	createWall({ 0.0f, 3.5f, -5.0f }, { 14.0f, 3.0f, 2.0f });
 	
+	App->audio->PlayMusic("Assets/outlookingin.wav", 2.0f);
 
 	posBeforeDeath = App->player->vehiclePos;
 	posBeforeDeath.y += 5;
@@ -177,7 +179,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			outputText(10, 10, 1, 1, 1, "WELCOME TO SPEEDY HEIGHTS!");
 			outputText(10, 8, 1, 1, 1, "IN ORDER TO WIN, YOU MUST");
 			outputText(10, 7, 1, 1, 1, "TOUCH EACH CHECKPOINT (GREEN");
-			outputText(10, 6, 1, 1, 1, "PLATFORMS AND GET BACK TO THE");
+			outputText(10, 6, 1, 1, 1, "PLATFORMS) AND GET BACK TO THE");
 			outputText(10, 5, 1, 1, 1, "STARTING PLATFORM. HAVE FUN!");
 			outputText(10, 3, 1, 1, 1, "USE 'WASD' TO MOVE");
 			outputText(10, 2, 1, 1, 1, "USE 'SHIFT' TO USE TURBO");
