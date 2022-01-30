@@ -82,6 +82,30 @@ bool ModuleRenderer3D::Init()
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
 		lights[0].SetPos(0.0f, 0.0f, 2.5f);
 		lights[0].Init();
+
+		lights[1].ref = GL_LIGHT4;
+		lights[1].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
+		lights[1].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
+		lights[1].SetPos(0.0f, 0.0f, 2.5f);
+		lights[1].Init();
+
+		lights[2].ref = GL_LIGHT4;
+		lights[2].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
+		lights[2].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
+		lights[2].SetPos(0.0f, 0.0f, 2.5f);
+		lights[2].Init();
+
+		lights[3].ref = GL_LIGHT4;
+		lights[3].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
+		lights[3].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
+		lights[3].SetPos(0.0f, 0.0f, 2.5f);
+		lights[3].Init();
+
+		lights[4].ref = GL_LIGHT4;
+		lights[4].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
+		lights[4].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
+		lights[4].SetPos(0.0f, 0.0f, 2.5f);
+		lights[4].Init();
 		
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
@@ -112,7 +136,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(0, 12, 10);
+	lights[1].SetPos(App->player->vehiclePos.x, App->player->vehiclePos.x, App->player->vehiclePos.x);
+	lights[2].SetPos(-330.0, -14.0f, 38.0f);
+	lights[3].SetPos(-330.0, -14.0f, 38.0f);
+	lights[4].SetPos(-330.0, -14.0f, 38.0f);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();

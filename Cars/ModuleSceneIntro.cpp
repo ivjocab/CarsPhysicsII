@@ -303,7 +303,7 @@ void ModuleSceneIntro::createPlatform(const vec3 pos, const vec3 size, float ang
 	Cube c;
 	c.SetPos(pos.x, pos.y, pos.z);
 	c.size = size;
-	if (size.x > 1000) c.color = Orange;
+	if (size.x > 1000) c.color = Magenta;
 	if (angle != 0) c.SetRotation(angle, dir);
 	platform_list.PushBack(c);
 	App->physics->AddBody(c, this, 0.0f, false);
@@ -314,7 +314,7 @@ void ModuleSceneIntro::createWall(const vec3 pos, const vec3 size)
 	Cube c;
 	c.SetPos(pos.x, pos.y, pos.z);
 	c.size = size;
-	c.color = Red;
+	c.color = Magenta;
 	c.n = 10;
 	checkpoints.PushBack(c);
 	App->physics->AddBody(c, this, 0.0f, false);
@@ -327,6 +327,7 @@ void ModuleSceneIntro::createCircularPlatform(const vec3 pos, const float radius
 	c.radius = radius;
 	c.height = height;
 	c.wire = false;
+	c.color = Grey;
 
 	c.SetRotation(180, {180, 180, 0});
 
@@ -361,7 +362,7 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, const vec3 size)
 	p->n = checkpoints.Count();
 	p->pos = pos;
 
-	if (p->n == 3) p->color = Red;
+	if (p->n == 3) p->color = Magenta;
 	else p->color = Yellow;
 	
 	checkpoints.PushBack(*p);
@@ -397,7 +398,8 @@ void ModuleSceneIntro::outputText(int x, int y, float r, float g, float b, char*
 	glRasterPos2f(x, y);
 	int len, i;
 	len = (int)strlen(string);
-	for (i = 0; i < len; i++) {
+	for (i = 0; i < len; i++) 
+	{
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
 	}
 }

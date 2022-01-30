@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
+#include "Light.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled), vehicle(NULL)
 {
@@ -100,6 +101,10 @@ bool ModulePlayer::Start()
 	vehicle->SetPos(0, 12, 10);
 	vehicleRot = vehicle->GetRotation();
 
+	l = new Light;
+	l->diffuse.Set(1.0f, 1.0f, 1.0f);
+	l->on = true;
+
 	//Cube* c = new Cube(2.4f, 2.2f, 4);
 	//vehicleCollider = App->physics->AddBody(*c, this, 1.0f, true);
 	//vehicleCollider->SetLinearVelocity(0, -250, 0);
@@ -161,7 +166,11 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
-	if (App->scene_intro->gameState == ModuleSceneIntro::Game_State::PLAY) vehicle->Render();
+	if (App->scene_intro->gameState == ModuleSceneIntro::Game_State::PLAY)
+	{
+		vehicle->Render();
+		l->Render();
+	}
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
@@ -178,6 +187,8 @@ update_status ModulePlayer::Update(float dt)
 	vec3 dist_to_car = { -16.0f, 12.0f, -25.0f };
 	vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
 	vec3 speed_camera = camera_new_position - App->camera->Position;
+
+	l->SetPos(vehicle->GetPos().x, vehicle->GetPos().y, vehicle->GetPos().z);
 
 	if (!debug)
 	{

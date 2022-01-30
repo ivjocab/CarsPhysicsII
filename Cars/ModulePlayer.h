@@ -33,4 +33,6 @@ public:
 	int lives;
 
 	bool debug = false;
+
+	Light* l;
 };
