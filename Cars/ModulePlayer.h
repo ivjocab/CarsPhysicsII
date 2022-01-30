@@ -6,7 +6,7 @@
 struct PhysVehicle3D;
 
 #define MAX_ACCELERATION 1000.0f
-#define TURN_DEGREES 15.0f * DEGTORAD
+#define TURN_DEGREES 5.0f * DEGTORAD
 #define BRAKE_POWER 3000.0f
 
 class ModulePlayer : public Module
@@ -22,6 +22,11 @@ public:
 	void RestartPlayer(int x, int y, int z);
 
 public:
+
+	bool turbo;
+	int turboCooldown;
+	
+	bool engineSound;
 
 	PhysVehicle3D* vehicle;
 	PhysBody3D* vehicleCollider;
