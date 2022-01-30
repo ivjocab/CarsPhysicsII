@@ -110,8 +110,6 @@ bool ModulePlayer::Start()
 	turboCooldown = 0;
 
 	App->audio->LoadFx("Assets/idle.wav");
-	App->audio->LoadFx("Assets/accelerating.wav");
-	App->audio->LoadFx("Assets/start.wav");
 	App->audio->LoadFx("Assets/turbo.wav");
 
 	App->audio->PlayFx(3, 0);
@@ -174,7 +172,7 @@ update_status ModulePlayer::Update(float dt)
 			if (turboCooldown <= 0) { 
 				turbo = true; 
 				turboCooldown = 400; 
-				App->audio->PlayFx(4, 0);
+				App->audio->PlayFx(2, 0);
 			}
 		}
 	}
