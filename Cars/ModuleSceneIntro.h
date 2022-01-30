@@ -35,13 +35,24 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void createRamp(const vec3 i, const vec3 f);
 	void createPlatform(const vec3 pos, const vec3 size, float angle, vec3 dir);
+	void createWall(const vec3 pos, const vec3 size);
 	void createCircularPlatform(const vec3 pos, const float radius, const float height);
 	void createRampPlatformZ(const vec3 pos, const vec3 size);
 	void createRampPlatformX(const vec3 pos, const vec3 size);
 	void createCheckPoint(const vec3 pos, const vec3 size);
 	void isPlayerOnCheckpoint();
+	void outputText(int x, int y, float r, float g, float b, char* string);
 
 public:
+
+	enum Game_State
+	{
+		PLAY,
+		VICTORY,
+		DEFEAT
+	};
+
+	Game_State gameState;
 
 	//Checkpoints & player death
 	vec3 posBeforeDeath;
@@ -65,4 +76,6 @@ public:
 	PhysMotor3D* right_wheel;
 
 	Cube* p;
+
+	int counter;
 };

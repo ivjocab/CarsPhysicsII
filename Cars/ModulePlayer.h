@@ -30,6 +30,7 @@ public:
 	float turn;
 	float acceleration;
 	float brake;
+	int lives;
 
-	bool debug = true;
+	bool debug = false;
 };

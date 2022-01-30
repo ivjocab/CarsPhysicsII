@@ -104,6 +104,8 @@ bool ModulePlayer::Start()
 	//vehicleCollider = App->physics->AddBody(*c, this, 1.0f, true);
 	//vehicleCollider->SetLinearVelocity(0, -250, 0);
 	//vehicleCollider->collision_listeners.add(this);
+
+	lives = 2;
 	
 	return true;
 }
@@ -159,7 +161,7 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
-	vehicle->Render();
+	if (App->scene_intro->gameState == ModuleSceneIntro::Game_State::PLAY) vehicle->Render();
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
@@ -184,11 +186,24 @@ update_status ModulePlayer::Update(float dt)
 
 	vehiclePos = vehicle->GetPos();
 	
-	if (vehicle->GetPos().y < -30.0f)
+	if (vehicle->GetPos().y < -30.0f && lives > 0)
 	{
 		vehicle->SetPos(App->scene_intro->posBeforeDeath.x, App->scene_intro->posBeforeDeath.y, App->scene_intro->posBeforeDeath.z);
 		vehicle->SetLinearVelocity(0, 0, 0);
 		vehicle->SetRotation(vehicleRot);
+		lives--;
+	}
+	else if (lives <= 0)
+	{
+		App->scene_intro->gameState = ModuleSceneIntro::Game_State::DEFEAT;
+	}
+	
+	if (App->scene_intro->gameState == ModuleSceneIntro::Game_State::DEFEAT)
+	{
+		vehicle->SetPos(0, 12, 10);
+		vehicle->SetLinearVelocity(0, 0, 0);
+		vehicle->SetRotation(vehicleRot);
+		lives = 2;
 	}
 
 	return UPDATE_CONTINUE;

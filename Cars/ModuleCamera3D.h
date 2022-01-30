@@ -27,6 +27,6 @@ public:
 	vec3 X, Y, Z, Position, Reference;
 
 private:
-	bool debug = true;
+	bool debug = false;
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 };

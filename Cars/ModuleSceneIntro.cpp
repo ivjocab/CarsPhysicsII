@@ -6,6 +6,7 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics3D.h"
 #include "Color.h"
+#include "glut/glut.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -38,7 +39,7 @@ bool ModuleSceneIntro::Start()
 	createCircularPlatform({ -510.0f, -100.0f, 20.0f }, 20, 320);
 
 	//Circuit
-	createPlatform({ 0, 1.0f, 10.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0);
+	createPlatform({ 0, 1.0f, 10.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0); //Start / Victory
 	createPlatform({ 0, 1.0f, 40.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ 0, 1.0f, 70.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ 0, 1.0f, 100.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
@@ -109,9 +110,16 @@ bool ModuleSceneIntro::Start()
 	createCheckPoint({ -330, -12.99f, 38.0f }, { 30.0f, 0.01f, 30.0f });
 	createCheckPoint({ -366, 1.01f, -130.0f }, { 30.0f, 0.01f, 30.0f });
 	createCheckPoint({ -82, 1.01f, -94.0f }, { 30.0f, 0.01f, 30.0f });
+	createCheckPoint({ 0, 2.01f, 10.0f }, { 30.0f, 0.01f, 30.0f });
+	createWall({ 0.0f, 3.5f, -5.0f }, { 14.0f, 3.0f, 2.0f });
+	
 
 	posBeforeDeath = App->player->vehiclePos;
 	posBeforeDeath.y += 5;
+
+	gameState = PLAY;
+
+	counter = 0;
 
 	return ret;
 }
@@ -161,29 +169,78 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	for (int i = 0; i < cube_circuit_pieces.prim_bodies.Count(); i++)
-		cube_circuit_pieces.prim_bodies[i].Render();
-
-	for (int i = 0; i < prim_check_points.Count(); i++)
-		prim_check_points[i].Render();
-
-	for (int i = 0; i < platform_list.Count(); i++)
-		platform_list[i].Render();
-
-	for (int i = 0; i < circular_platform_list.Count(); i++)
-		circular_platform_list[i].Render();
-
-	for (int i = 0; i < checkpoints.Count(); i++)
-		checkpoints[i].Render();
-
-	isPlayerOnCheckpoint();
-	if (checkpointsObtained > 0 && checkpointsObtained < 4)
+	switch (gameState)
 	{
-		posBeforeDeath = checkpoints[checkpointsObtained - 1].pos;
-	}
-	if (checkpointsObtained < 4)
-	{
+	case PLAY:
+		if (counter < 3000)
+		{
+			outputText(10, 10, 1, 1, 1, "WELCOME TO SPEEDY HEIGHTS!");
+			outputText(10, 8, 1, 1, 1, "IN ORDER TO WIN, YOU MUST");
+			outputText(10, 7, 1, 1, 1, "TOUCH EACH CHECKPOINT (GREEN");
+			outputText(10, 6, 1, 1, 1, "PLATFORMS AND GET BACK TO THE");
+			outputText(10, 5, 1, 1, 1, "STARTING PLATFORM. HAVE FUN!");
+			outputText(10, 3, 1, 1, 1, "USE 'WASD' TO MOVE");
+			outputText(10, 2, 1, 1, 1, "USE 'SHIFT' TO USE TURBO");
+			counter++;
+		}
+		for (int i = 0; i < cube_circuit_pieces.prim_bodies.Count(); i++)
+			cube_circuit_pieces.prim_bodies[i].Render();
 
+		for (int i = 0; i < prim_check_points.Count(); i++)
+			prim_check_points[i].Render();
+
+		for (int i = 0; i < platform_list.Count(); i++)
+			platform_list[i].Render();
+
+		for (int i = 0; i < circular_platform_list.Count(); i++)
+			circular_platform_list[i].Render();
+
+		for (int i = 0; i < checkpoints.Count() - 1; i++)
+			checkpoints[i].Render();
+
+		if (checkpointsObtained < 3) checkpoints[4].Render();
+		else checkpoints[4].SetPos(20, 1000, 20);
+
+		isPlayerOnCheckpoint();
+		if (checkpointsObtained > 0 && checkpointsObtained < 4)
+		{
+			posBeforeDeath = checkpoints[checkpointsObtained - 1].pos;
+		}
+		else if (checkpointsObtained >= 4)
+		{
+			gameState = VICTORY;
+		}
+		break;
+	case VICTORY:
+		outputText(3, 8, 1, 1, 1, "YOU WON!");
+		outputText(5, 7, 1, 1, 1, "PRESS 'ENTER' TO PLAY AGAIN");
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		{
+			//Resetting values for new game
+			checkpointsObtained = 0;
+			checkpoints[4].SetPos(0, 3.5f, -5.0f);
+			posBeforeDeath = { 0, 12, 10 };
+			counter = 0;
+
+			gameState = PLAY;
+		}
+		break;
+	case DEFEAT:
+		outputText(3, 8, 1, 1, 1, "YOU LOST!");
+		outputText(5, 7, 1, 1, 1, "PRESS 'ENTER' TO RETRY");
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		{
+			//Resetting values for new game
+			checkpointsObtained = 0;
+			checkpoints[4].SetPos(0, 3.5f, -5.0f);
+			posBeforeDeath = { 0, 12, 10 };
+			counter = 0;
+
+			gameState = PLAY;
+		}
+		break;
+	default:
+		break;
 	}
 
 	return UPDATE_CONTINUE;
@@ -250,6 +307,17 @@ void ModuleSceneIntro::createPlatform(const vec3 pos, const vec3 size, float ang
 	App->physics->AddBody(c, this, 0.0f, false);
 }
 
+void ModuleSceneIntro::createWall(const vec3 pos, const vec3 size)
+{
+	Cube c;
+	c.SetPos(pos.x, pos.y, pos.z);
+	c.size = size;
+	c.color = Red;
+	c.n = 10;
+	checkpoints.PushBack(c);
+	App->physics->AddBody(c, this, 0.0f, false);
+}
+
 void ModuleSceneIntro::createCircularPlatform(const vec3 pos, const float radius, const float height)
 {
 	Cylinder c;
@@ -289,8 +357,11 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, const vec3 size)
 	p = new Cube(size.x, size.y, size.z);
 	p->SetPos(pos.x, pos.y, pos.z);
 	p->n = checkpoints.Count();
-	p->color = Yellow;
 	p->pos = pos;
+
+	if (p->n == 3) p->color = Red;
+	else p->color = Yellow;
+	
 	checkpoints.PushBack(*p);
 }
 
@@ -314,10 +385,18 @@ void ModuleSceneIntro::isPlayerOnCheckpoint()
 			{
 				checkpointsObtained++;
 			}
-			/*createCheckPoint({ -330, -12.99f, 38.0f }, { 30.0f, 0.01f, 30.0f });
-			createCheckPoint({ -366, 1.01f, -130.0f }, { 30.0f, 0.01f, 30.0f });
-			createCheckPoint({ -82, 1.01f, -94.0f }, { 30.0f, 0.01f, 30.0f });*/
 		}
+	}
+}
+
+void ModuleSceneIntro::outputText(int x, int y, float r, float g, float b, char* string)
+{
+	glColor3f(r, g, b);
+	glRasterPos2f(x, y);
+	int len, i;
+	len = (int)strlen(string);
+	for (i = 0; i < len; i++) {
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
 	}
 }
 
