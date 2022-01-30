@@ -162,7 +162,8 @@ bool ModuleSceneIntro::Start()
 	createPlatform({ -22, 0.0f, -94.0f }, { 30.0f, 2.0f, 14.0f }, 0, 0);
 	createPlatform({ 0, 0.0f, -86.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
 	createPlatform({ -0, 0.0f, -56.0f }, { 24.0f, 2.0f, 30.0f }, 180, { 45, 180, 0 });
-	createPlatform({ 0, 1.0f, -23.0f }, { 14.0f, 2.0f, 36.0f }, 0, 0);
+	createPlatform({ 0, 1.0f, -32.0f }, { 14.0f, 2.0f, 18.0f }, 0, 0);
+	createPlatform({ 0, 3.5f, -16.0f }, { 14.0f, 2.0f, 15.0f }, 180, { 0, 90, 520 });
 
 	//Checkpoints
 	createCheckPoint({ -330, -12.99f, 38.0f }, { 30.0f, 0.01f, 30.0f });
@@ -374,7 +375,7 @@ void ModuleSceneIntro::createWall(const vec3 pos, const vec3 size)
 	c.color = Magenta;
 	c.n = 10;
 	checkpoints.PushBack(c);
-	App->physics->AddBody(c, this, 0.0f, false);
+	App->physics->AddBody(c, this, 0.0f, true);
 }
 
 void ModuleSceneIntro::createCircularPlatform(const vec3 pos, const float radius, const float height)
