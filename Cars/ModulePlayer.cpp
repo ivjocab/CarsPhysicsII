@@ -138,6 +138,8 @@ update_status ModulePlayer::Update(float dt)
 	
 	turn = 0.0f;
 
+	vehicle->ApplyEngineForce(0.0f);
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		debug = !debug;
@@ -147,6 +149,10 @@ update_status ModulePlayer::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			vehicle->ApplyEngineForce(MAX_ACCELERATION * 0.6);
+		}
+		else {
+			if (vehicle->GetKmh() > 0) vehicle->ApplyEngineForce(-MAX_ACCELERATION * 0.3f);
+			else vehicle->ApplyEngineForce(MAX_ACCELERATION * 0.3f);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -177,12 +183,23 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	// apply forces
+	// Apply forces
+
+	// Turbo
 	vehicle->Turn(turn);
 	if (turbo == true) {
-		if (turboCooldown > 370) vehicle->ApplyEngineForce(MAX_ACCELERATION * 5.0f);
+		if (turboCooldown > 370) vehicle->ApplyEngineForce(MAX_ACCELERATION * 8.0f);
 		--turboCooldown;
 	}
+	// Drag
+	NewSpeed.x = vehicle->GetLinearVelocity().x * DRAG_COEFICIENT;
+	// AirDrag
+	if (vehicle->GetPos().y > 3) NewSpeed.y = vehicle->GetLinearVelocity().y - MAX_ACCELERATION * 0.01f;
+	else NewSpeed.y = 0.0f;
+    // Drag
+	NewSpeed.z = vehicle->GetLinearVelocity().z * DRAG_COEFICIENT;
+
+	//vehicle->SetLinearVelocity(NewSpeed.x, NewSpeed.y, NewSpeed.z);
 
 	// render
 	if (App->scene_intro->gameState == ModuleSceneIntro::Game_State::PLAY)

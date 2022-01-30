@@ -1,6 +1,6 @@
 ﻿  ModulePlayer.cpp
-C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(206,24): warning C4305:  'inicializando': truncamiento de 'double' a 'float'
-C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(253,24): warning C4244:  'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(253,21): warning C4244:  'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(253,18): warning C4244:  'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(221,24): warning C4305:  'inicializando': truncamiento de 'double' a 'float'
+C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(268,24): warning C4244:  'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(268,21): warning C4244:  'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\ModulePlayer.cpp(268,18): warning C4244:  'argumento': conversión de 'int' a 'float'; posible pérdida de datos
   3D Physics.vcxproj -> C:\Users\tolo otto\Documents\GitHub\CarsPhysicsII\Cars\Debug\3D Physics - class5.exe
