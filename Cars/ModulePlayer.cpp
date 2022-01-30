@@ -5,6 +5,7 @@
 #include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
 #include "Light.h"
+#include "ModuleAudio.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled), vehicle(NULL)
 {
@@ -105,10 +106,16 @@ bool ModulePlayer::Start()
 	l->diffuse.Set(1.0f, 1.0f, 1.0f);
 	l->on = true;
 
-	//Cube* c = new Cube(2.4f, 2.2f, 4);
-	//vehicleCollider = App->physics->AddBody(*c, this, 1.0f, true);
-	//vehicleCollider->SetLinearVelocity(0, -250, 0);
-	//vehicleCollider->collision_listeners.add(this);
+	turbo = false;
+	turboCooldown = 0;
+
+	App->audio->LoadFx("Assets/idle.wav");
+	App->audio->LoadFx("Assets/accelerating.wav");
+	App->audio->LoadFx("Assets/start.wav");
+	App->audio->LoadFx("Assets/turbo.wav");
+
+	App->audio->PlayFx(3, 0);
+	engineSound = false;
 
 	lives = 2;
 	
@@ -126,7 +133,12 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
-	turn = acceleration = brake = 0.0f;
+	if (engineSound == false) {
+		App->audio->PlayFx(1, 1000);
+		engineSound = true;
+	}
+	
+	turn = 0.0f;
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
@@ -136,8 +148,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
-			if (acceleration < 0) brake = BRAKE_POWER;
-			acceleration = MAX_ACCELERATION;
+			vehicle->ApplyEngineForce(MAX_ACCELERATION * 0.6);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -154,30 +165,42 @@ update_status ModulePlayer::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
-			if (acceleration > 0) brake = BRAKE_POWER;
-			else acceleration = -MAX_ACCELERATION;
+			if (vehicle->GetKmh() < 0) vehicle->ApplyEngineForce(-MAX_ACCELERATION * 0.3f);
+			else vehicle->ApplyEngineForce(-MAX_ACCELERATION * 5.0f);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN)
+		{
+			if (turboCooldown <= 0) { 
+				turbo = true; 
+				turboCooldown = 400; 
+				App->audio->PlayFx(4, 0);
+			}
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		RestartPlayer(5, 5, 5);
-
-	vehicle->ApplyEngineForce(acceleration);
+	// apply forces
 	vehicle->Turn(turn);
-	vehicle->Brake(brake);
+	if (turbo == true) {
+		if (turboCooldown > 370) vehicle->ApplyEngineForce(MAX_ACCELERATION * 5.0f);
+		--turboCooldown;
+	}
 
+	// render
 	if (App->scene_intro->gameState == ModuleSceneIntro::Game_State::PLAY)
 	{
 		vehicle->Render();
 		l->Render();
 	}
 
+	// reset state
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		RestartPlayer(5, 5, 5);
+
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
-	//vehicleCollider->SetPos(vehicle->GetPos().x, vehicle->GetPos().y + 0.8, vehicle->GetPos().z);
-	//vehicleCollider->SetRotation(vehicle->GetRotation());
 
 	//Camera position
 	float speed_cam = 0.09;
