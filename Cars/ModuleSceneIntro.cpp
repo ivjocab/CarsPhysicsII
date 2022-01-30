@@ -39,6 +39,44 @@ bool ModuleSceneIntro::Start()
 	createCircularPlatform({ -250.0f, -100.0f, -40.0f }, 30, 280);
 	createCircularPlatform({ -510.0f, -100.0f, 20.0f }, 20, 320);
 
+	//obstacles
+	createCircularPlatform({ -140, 4.0f, 144.0f }, 1, 4);
+	createCircularPlatform({ -136, 4.0f, 164.0f }, 1, 4);
+	createCircularPlatform({ -132, 4.0f, 174.0f }, 1, 4);
+	createCircularPlatform({ -232, 4.0f, 158.0f }, 1, 4);
+	createCircularPlatform({ -230, 4.0f, 155.0f }, 1, 4);
+	createCircularPlatform({ -228, 4.0f, 152.0f }, 1, 4);
+	
+	createCircularPlatform({ -478, -11.0f, 0.0f }, 1, 4);
+	createCircularPlatform({ -476, -11.0f, -3.0f }, 1, 4);
+	createCircularPlatform({ -474, -11.0f, -6.0f }, 1, 4);
+	
+	createCircularPlatform({ -466, -11.0f, -24.0f }, 1, 4);
+	createCircularPlatform({ -468, -11.0f, -27.0f }, 1, 4);
+	createCircularPlatform({ -470, -11.0f, -30.0f }, 1, 4);
+
+	createCircularPlatform({ -434, -11.0f, -56.0f }, 1, 4);
+	createCircularPlatform({ -420, -11.0f, -50.0f }, 1, 4);
+	createCircularPlatform({ -407, -11.0f, -52.0f }, 1, 4);
+	createCircularPlatform({ -395, -11.0f, -55.0f }, 1, 4);
+	createCircularPlatform({ -390, -11.0f, -48.0f }, 1, 4);
+
+	createCircularPlatform({ -464, -11.0f, -143.0f }, 1, 4);
+	createCircularPlatform({ -464, -11.0f, -133.0f }, 1, 4);
+	createCircularPlatform({ -454, -11.0f, -138.0f }, 1, 4);
+	createCircularPlatform({ -444, -11.0f, -143.0f }, 1, 4);
+	createCircularPlatform({ -444, -11.0f, -133.0f }, 1, 4);
+	createCircularPlatform({ -434, -11.0f, -138.0f }, 1, 4);
+	createCircularPlatform({ -424, -11.0f, -143.0f }, 1, 4);
+	createCircularPlatform({ -424, -11.0f, -133.0f }, 1, 4);
+	createCircularPlatform({ -414, -11.0f, -138.0f }, 1, 4);
+
+	createCircularPlatform({ -384, -11.0f, -143.0f }, 1, 4);
+	createCircularPlatform({ -374, -11.0f, -133.0f }, 1, 4);
+	createCircularPlatform({ -364, -11.0f, -138.0f }, 1, 4);
+	createCircularPlatform({ -354, -11.0f, -143.0f }, 1, 4);
+	createCircularPlatform({ -344, -11.0f, -133.0f }, 1, 4);
+
 	//Circuit
 	createPlatform({ 0, 1.0f, 10.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0); //Start / Victory
 	createPlatform({ 0, 1.0f, 40.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);

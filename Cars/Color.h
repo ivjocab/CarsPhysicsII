@@ -34,3 +34,4 @@ extern Color Orange;
 extern Color Grey;
 extern Color Yellow;
 extern Color Dark_Green;
+extern Color Magenta;
