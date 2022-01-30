@@ -77,6 +77,25 @@ bool ModuleSceneIntro::Start()
 	createCircularPlatform({ -354, -11.0f, -143.0f }, 1, 4);
 	createCircularPlatform({ -344, -11.0f, -133.0f }, 1, 4);
 
+	createCircularPlatform({ -380, 3.0f, -130.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -126.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -122.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -118.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -134.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -138.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -142.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -130.0f }, 1, 4);
+	createCircularPlatform({ -380, 3.0f, -130.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -130.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -126.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -122.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -118.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -134.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -138.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -142.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -130.0f }, 1, 4);
+	createCircularPlatform({ -352, 3.0f, -130.0f }, 1, 4);
+
 	//Circuit
 	createPlatform({ 0, 1.0f, 10.0f }, { 30.0f, 2.0f, 30.0f }, 0, 0); //Start / Victory
 	createPlatform({ 0, 1.0f, 40.0f }, { 14.0f, 2.0f, 30.0f }, 0, 0);
